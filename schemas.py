@@ -11,8 +11,8 @@ Model name is converted to lowercase for the collection name:
 - BlogPost -> "blogs" collection
 """
 
-from pydantic import BaseModel, Field
-from typing import Optional
+from pydantic import BaseModel, Field, EmailStr
+from typing import Optional, List
 
 # Example schemas (replace with your own):
 
@@ -37,6 +37,35 @@ class Product(BaseModel):
     price: float = Field(..., ge=0, description="Price in dollars")
     category: str = Field(..., description="Product category")
     in_stock: bool = Field(True, description="Whether product is in stock")
+
+# Luxury Catering Website Schemas
+
+class MenuItem(BaseModel):
+    title: str = Field(..., description="Dish name")
+    description: Optional[str] = Field(None, description="Short description")
+    category: str = Field(..., description="e.g., Canapés, Mains, Desserts")
+    price: Optional[float] = Field(None, ge=0, description="Optional price")
+    image_url: Optional[str] = Field(None, description="Dish image")
+    tags: Optional[List[str]] = Field(default_factory=list, description="Dietary or style tags")
+
+class Testimonial(BaseModel):
+    name: str = Field(..., description="Client name")
+    title: Optional[str] = Field(None, description="Client title or event")
+    quote: str = Field(..., description="Testimonial text")
+    avatar_url: Optional[str] = Field(None, description="Avatar image URL")
+
+class GalleryImage(BaseModel):
+    url: str = Field(..., description="Image URL")
+    alt: Optional[str] = Field(None, description="Alt text for accessibility")
+
+class ContactInquiry(BaseModel):
+    name: str = Field(...)
+    email: EmailStr = Field(...)
+    phone: Optional[str] = Field(None)
+    event_date: Optional[str] = Field(None, description="Date string")
+    guest_count: Optional[int] = Field(None, ge=1)
+    message: Optional[str] = Field(None)
+    source: Optional[str] = Field("website", description="Lead source")
 
 # Add your own schemas here:
 # --------------------------------------------------
